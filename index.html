@@ -80,6 +80,13 @@
       margin: 2em 0 1em 0;
       z-index: 1;
       position: relative;
+      transform: scale(0);
+      opacity: 0;
+      transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .logo.active {
+      transform: scale(1);
+      opacity: 1;
     }
     .logo-frame {
       display: inline-block;
@@ -87,6 +94,11 @@
       border-radius: 50%;
       background: radial-gradient(circle, #6a44ff88, #2a1b63cc);
       box-shadow: 0 0 25px #7c3aedcc, 0 0 45px #0d3b93cc inset;
+      transition: all 1s ease;
+    }
+    .logo-frame.spin {
+      animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+      box-shadow: 0 0 50px #7c3aed, 0 0 80px #0d3b93;
     }
     .logo img {
       width: 100px;
@@ -95,7 +107,28 @@
       border-radius: 50%;
       border: 4px solid #7c3aed;
       box-shadow: 0 0 15px #7c3aed;
+      transition: all 1s ease;
     }
+    .logo.spin img {
+      animation: pulse 0.5s ease infinite alternate;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0) scale(0.5); }
+      50% { transform: rotate(360deg) scale(1.5); }
+      100% { transform: rotate(720deg) scale(1); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 15px #7c3aed; }
+      100% { transform: scale(1.1); box-shadow: 0 0 30px #b085f5; }
+    }
+
+    @keyframes slideIn {
+      0% { transform: translateY(-50px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
     nav {
       display: flex;
       justify-content: center;
@@ -108,13 +141,29 @@
       position: sticky;
       top: 0;
       z-index: 5;
+      transform: translateY(-50px);
+      opacity: 0;
+      transition: all 1s ease 0.5s;
+    }
+    nav.active {
+      transform: translateY(0);
+      opacity: 1;
     }
     nav a {
       color: #b0a5ff;
       text-decoration: none;
       padding: 8px 20px;
       border-radius: 30px;
+      transform: scale(0.8);
+      opacity: 0;
+      transition: all 0.5s ease;
     }
+    nav.active a {
+      transform: scale(1);
+      opacity: 1;
+    }
+    nav a:nth-child(1) { transition-delay: 1s; }
+    nav a:nth-child(2) { transition-delay: 1.2s; }
     nav a:hover, nav a.active {
       color: #f4f1ff;
       background: rgba(115, 62, 219, 0.15);
@@ -127,9 +176,14 @@
       justify-content: center;
       max-width: 1200px;
       margin: 0 auto 5em auto;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 1s ease;
     }
     .page.active {
       display: flex;
+      opacity: 1;
+      transform: translateY(0);
     }
     .video-card {
       width: 320px;
@@ -141,7 +195,19 @@
       display: flex;
       flex-direction: column;
       margin: 15px;
+      transform: scale(0.9);
+      opacity: 0;
+      transition: all 0.5s ease;
     }
+    .page.active .video-card {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .page.active .video-card:nth-child(1) { transition-delay: 1.4s; }
+    .page.active .video-card:nth-child(2) { transition-delay: 1.6s; }
+    .page.active .video-card:nth-child(3) { transition-delay: 1.8s; }
+    .page.active .video-card:nth-child(4) { transition-delay: 2s; }
+    .page.active .video-card:nth-child(5) { transition-delay: 2.2s; }
     .video-title {
       padding: 1em 1.2em;
       font-size: 22px;
@@ -180,12 +246,47 @@
         width: 95vw;
       }
     }
+
+    /* تأثيرات إضافية */
+    .tech-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, transparent, #0a0429 70%);
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+    }
+    .tech-overlay.active {
+      opacity: 1;
+    }
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9997;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      background: #7c3aed;
+      border-radius: 50%;
+      opacity: 0;
+    }
   </style>
 </head>
 <body>
+  <div class="tech-overlay"></div>
+  <div class="particles"></div>
+
   <div id="introVideoContainer">
     <div id="welcomeText">Welcome To Our Training</div>
-    <video id="introVideo" autoplay controls playsinline>
+    <video id="introVideo" autoplay muted playsinline>
       <source src="https://ia601903.us.archive.org/21/items/4_20250520_20250520_2123/4.mp4" type="video/mp4" />
       المتصفح لا يدعم عرض الفيديو.
     </video>
@@ -271,11 +372,11 @@
 
   <script>
     // تنقل بين الصفحات
-      function showPage(pageId, elem) {
+    function showPage(pageId, elem) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
 
-      document.querySelectorAll('nav a').forEach(nav =>                               nav.classList.remove('active'));
+      document.querySelectorAll('nav a').forEach(nav => nav.classList.remove('active'));
       elem.classList.add('active');
 
       // عند التنقل توقف كل الفيديوهات داخل البطاقات
@@ -285,21 +386,128 @@
       });
     }
 
-    // إخفاء مقدمة الفيديو عند الضغط على Next
-      introVideo.muted = false;
-    introVideo.play().catch(() => {
-      playBtn.style.display = 'block';
+    // تشغيل فيديو المقدمة تلقائياً مع الصوت
+    document.addEventListener('DOMContentLoaded', () => {
+      const introVideo = document.getElementById('introVideo');
+      
+      // حاول تشغيل الفيديو تلقائياً
+      const playPromise = introVideo.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          // بعد بدء التشغيل، أزل كتم الصوت
+          introVideo.muted = false;
+        })
+        .catch(error => {
+          console.error('فشل التشغيل التلقائي:', error);
+        });
+      }
     });
-    document.getElementById('nextBtn').addEventListener('click', () => {
-  const introContainer = document.getElementById('introVideoContainer');
-  const introVideo = document.getElementById('introVideo');
-  introVideo.pause(); // إيقاف تشغيل فيديو المقدمة
-  introContainer.classList.add('fadeOut');
-  setTimeout(() => {
-    introContainer.style.display = 'none';
-  }, 1200);
-});
 
+    // إنشاء جزيئات التأثير
+    function createParticles() {
+      const particlesContainer = document.querySelector('.particles');
+      particlesContainer.innerHTML = '';
+      
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // تحديد حجم عشوائي بين 2px و6px
+        const size = Math.random() * 4 + 2;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // تحديد موضع عشوائي
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // تحديد لون عشوائي من اللون البنفسجي
+        const hue = 260 + Math.random() * 20;
+        particle.style.backgroundColor = `hsl(${hue}, 80%, 60%)`;
+        
+        // إضافة الجسيم إلى الحاوية
+        particlesContainer.appendChild(particle);
+        
+        // تحريك الجسيم
+        animateParticle(particle);
+      }
+    }
+
+    // تحريك الجسيمات
+    function animateParticle(particle) {
+      const duration = Math.random() * 3 + 2;
+      
+      // حركة عشوائية
+      const keyframes = [
+        { 
+          transform: 'translate(0, 0)',
+          opacity: 0 
+        },
+        { 
+          transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`,
+          opacity: 0.8 
+        },
+        { 
+          transform: `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`,
+          opacity: 0 
+        }
+      ];
+      
+      const options = {
+        duration: duration * 1000,
+        iterations: Infinity
+      };
+      
+      particle.animate(keyframes, options);
+    }
+
+    // إخفاء مقدمة الفيديو عند الضغط على Next مع تأثيرات سينمائية
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      const introContainer = document.getElementById('introVideoContainer');
+      const introVideo = document.getElementById('introVideo');
+      const logo = document.querySelector('.logo');
+      const logoFrame = document.querySelector('.logo-frame');
+      const logoImg = document.querySelector('.logo img');
+      const nav = document.querySelector('nav');
+      const techOverlay = document.querySelector('.tech-overlay');
+      
+      // إيقاف الفيديو التمهيدي وإفراغ مصدره
+      introVideo.pause();
+      introVideo.currentTime = 0;
+      introVideo.src = '';
+      introVideo.load();
+      
+      // إخفاء الفيديو التمهيدي
+      introContainer.classList.add('fadeOut');
+      
+      // تفعيل التأثيرات التقنية
+      techOverlay.classList.add('active');
+      createParticles();
+      
+      // بدء تأثيرات الشعار
+      setTimeout(() => {
+        logo.classList.add('active');
+        logoFrame.classList.add('spin');
+        logoImg.classList.add('spin');
+        
+        // بعد انتهاء دوران الشعار، إظهار باقي العناصر
+        setTimeout(() => {
+          nav.classList.add('active');
+          document.querySelector('.page.active').classList.add('active');
+          
+          // إخفاء التأثيرات التقنية بعد انتهاء الرسوم المتحركة
+          setTimeout(() => {
+            techOverlay.classList.remove('active');
+            document.querySelector('.particles').innerHTML = '';
+          }, 2000);
+        }, 1500);
+      }, 500);
+      
+      setTimeout(() => {
+        introContainer.style.display = 'none';
+      }, 1200);
+    });
 
     // سكربت لتحسين تشغيل الفيديوهات داخل البطاقات فقط:
     const cardVideos = document.querySelectorAll('.page video');
@@ -308,7 +516,7 @@
         cardVideos.forEach(otherVideo => {
           if (otherVideo !== video && !otherVideo.paused) {
             otherVideo.pause();
-            otherVideo.currentTime = 0; // تعيد الفيديو للصفر (اختياري)
+            otherVideo.currentTime = 0;
           }
         });
       });
