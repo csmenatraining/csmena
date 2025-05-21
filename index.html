@@ -286,7 +286,7 @@
     }
 
     // إخفاء مقدمة الفيديو عند الضغط على Next
-      introVideo.muted = true;
+      introVideo.muted = false;
     introVideo.play().catch(() => {
       playBtn.style.display = 'block';
     });
