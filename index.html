@@ -189,7 +189,7 @@
       <source src="https://ia601903.us.archive.org/21/items/4_20250520_20250520_2123/4.mp4" type="video/mp4" />
       المتصفح لا يدعم عرض الفيديو.
     </video>
-    <button id="playIntroBtn" style="display:none;">تشغيل الفيديو التعريفي</button>
+    
     <button id="nextBtn">Next</button>
   </div>
 
@@ -260,7 +260,10 @@
       playBtn.style.display = 'block';
     });
 
-   
+    playBtn.addEventListener('click', () => {
+      introVideo.play();
+      playBtn.style.display = 'none';
+    });
 
     nextBtn.addEventListener('click', () => {
       introVideo.pause();
