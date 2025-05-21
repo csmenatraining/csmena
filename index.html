@@ -56,7 +56,7 @@
       user-select: none;
     }
 
-    #nextBtn, #playIntroBtn {
+    #nextBtn {
       margin-top: 20px;
       background: linear-gradient(135deg, #7c3aed, #3c1a7a);
       border: none;
@@ -70,7 +70,7 @@
       transition: transform 0.3s ease;
       user-select: none;
     }
-    #nextBtn:hover, #playIntroBtn:hover {
+    #nextBtn:hover {
       transform: scale(1.1);
       box-shadow: 0 0 30px #b085f5, 0 0 45px #3f27a1;
     }
@@ -189,7 +189,6 @@
       <source src="https://ia601903.us.archive.org/21/items/4_20250520_20250520_2123/4.mp4" type="video/mp4" />
       المتصفح لا يدعم عرض الفيديو.
     </video>
-    <button id="playIntroBtn" style="display:none;">تشغيل الفيديو التعريفي</button>
     <button id="nextBtn">Next</button>
   </div>
 
@@ -205,92 +204,111 @@
   </nav>
 
   <div id="page1" class="page active">
-    <div class="video-card"><div class="video-title">Intro</div><div class="video-wrapper"><video src="https://ia601903.us.archive.org/21/items/4_20250520_20250520_2123/3.mp4" controls onclick="openFullscreen(this)"></video></div></div>
-    <div class="video-card"><div class="video-title">Wrong Items/Order</div><div class="video-wrapper"><video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/2.mp4" controls onclick="openFullscreen(this)"></video></div></div>
-    <div class="video-card"><div class="video-title">Food spillage/damage</div><div class="video-wrapper"><video src="https://ia600101.us.archive.org/12/items/food-spillagedamage_202505/Food%20spillagedamage.mp4" controls onclick="openFullscreen(this)"></video></div></div>
-    <div class="video-card"><div class="video-title">Didn't receive the order</div><div class="video-wrapper"><video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/11.mp4" controls onclick="openFullscreen(this)"></video></div></div>
-    <div class="video-card"><div class="video-title">Order Modification/Cancellation</div><div class="video-wrapper"><video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/1.mp4" controls onclick="openFullscreen(this)"></video></div></div>
+    <div class="video-card">
+      <div class="video-title">Intro</div>
+      <div class="video-wrapper">
+        <video src="https://ia601903.us.archive.org/21/items/4_20250520_20250520_2123/3.mp4" controls playsinline></video>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-title">Wrong Items/Order</div>
+      <div class="video-wrapper">
+        <video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/2.mp4" controls playsinline></video>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-title">Food spillage/damage</div>
+      <div class="video-wrapper">
+        <video src="https://ia600101.us.archive.org/12/items/food-spillagedamage_202505/Food%20spillagedamage.mp4" controls playsinline></video>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-title">Didn't receive the order</div>
+      <div class="video-wrapper">
+        <video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/11.mp4" controls playsinline></video>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-title">Order Modification/Cancellation</div>
+      <div class="video-wrapper">
+        <video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/1.mp4" controls playsinline></video>
+      </div>
+    </div>
   </div>
 
   <div id="page2" class="page">
-    <div class="video-card"><div class="video-title">Traffic accidents</div><div class="video-wrapper"><video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/10.mp4" controls onclick="openFullscreen(this)"></video></div></div>
-    <div class="video-card"><div class="video-title">Merchant Closed</div><div class="video-wrapper"><video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/6.mp4" controls onclick="openFullscreen(this)"></video></div></div>
-    <div class="video-card"><div class="video-title">Meals were taken away by another one</div><div class="video-wrapper"><video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/7.mp4" controls onclick="openFullscreen(this)"></video></div></div>
-    <div class="video-card"><div class="video-title">The delivery address is inaccessible</div><div class="video-wrapper"><video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/5.mp4" controls onclick="openFullscreen(this)"></video></div></div>
-    <div class="video-card"><div class="video-title">Unable to contact the customer</div><div class="video-wrapper"><video src="https://ia601903.us.archive.org/21/items/4_20250520_20250520_2123/8.mp4" controls onclick="openFullscreen(this)"></video></div></div>
-    <div class="video-card"><div class="video-title">Unable to deliver due to the courier's personal reasons</div><div class="video-wrapper"><video src="https://ia601903.us.archive.org/21/items/4_20250520_20250520_2123/9.mp4" controls onclick="openFullscreen(this)"></video></div></div>
-    <div class="video-card"><div class="video-title">Food prepared slowly</div><div class="video-wrapper"><video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/12.mp4" controls onclick="openFullscreen(this)"></video></div></div>
-  </div>
-
-  <div id="fullscreenContainer" class="fullscreen-video" onclick="closeFullscreen()">
-    <video id="fullscreenVideo" controls autoplay></video>
+    <div class="video-card">
+      <div class="video-title">Traffic accidents</div>
+      <div class="video-wrapper">
+        <video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/10.mp4" controls playsinline></video>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-title">Merchant Closed</div>
+      <div class="video-wrapper">
+        <video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/6.mp4" controls playsinline></video>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-title">Meals were taken away by another one</div>
+      <div class="video-wrapper">
+        <video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/7.mp4" controls playsinline></video>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-title">The delivery address is inaccessible</div>
+      <div class="video-wrapper">
+        <video src="https://ia801903.us.archive.org/21/items/4_20250520_20250520_2123/5.mp4" controls playsinline></video>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-title">Unable to contact the customer</div>
+      <div class="video-wrapper">
+        <video src="https://ia601903.us.archive.org/21/items/4_20250520_20250520_2123/9.mp4" controls playsinline></video>
+      </div>
+    </div>
   </div>
 
   <script>
-    function showPage(pageId, linkElement) {
+    // تنقل بين الصفحات
+    function showPage(pageId, elem) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
-      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-      if(linkElement) linkElement.classList.add('active');
+
+      document.querySelectorAll('nav a').forEach(nav => nav.classList.remove('active'));
+      elem.classList.add('active');
+
+      // عند التنقل توقف كل الفيديوهات داخل البطاقات
+      document.querySelectorAll('.page video').forEach(v => {
+        v.pause();
+        v.currentTime = 0;
+      });
     }
 
-    function openFullscreen(videoElement) {
-      const fullscreenContainer = document.getElementById('fullscreenContainer');
-      const fullscreenVideo = document.getElementById('fullscreenVideo');
-      fullscreenVideo.src = videoElement.src;
-      fullscreenContainer.style.display = 'flex';
-      fullscreenVideo.play();
-    }
-
-    function closeFullscreen() {
-      const fullscreenContainer = document.getElementById('fullscreenContainer');
-      const fullscreenVideo = document.getElementById('fullscreenVideo');
-      fullscreenVideo.pause();
-      fullscreenVideo.src = '';
-      fullscreenContainer.style.display = 'none';
-    }
-
-const introVideo = document.getElementById('introVideo');
-const introContainer = document.getElementById('introVideoContainer');
-const nextBtn = document.getElementById('nextBtn');
-
-// اضبط الفيديو ليبدأ muted حتى يتوافق مع سياسات التشغيل التلقائي في أغلب المتصفحات
-introVideo.muted = false; 
-introVideo.play();
-
-// حذف أي إظهار لزر playIntroBtn لأنه لن نحتاجه
-// لذا يمكنك حذف أو تجاهل playIntroBtn بالكامل
-
-// تابع زر Next كما هو
-nextBtn.addEventListener('click', () => {
-  introVideo.pause();
+    // إخفاء مقدمة الفيديو عند الضغط على Next
+    document.getElementById('nextBtn').addEventListener('click', () => {
+  const introContainer = document.getElementById('introVideoContainer');
+  const introVideo = document.getElementById('introVideo');
+  introVideo.pause(); // إيقاف تشغيل فيديو المقدمة
   introContainer.classList.add('fadeOut');
   setTimeout(() => {
     introContainer.style.display = 'none';
-    showPage('page1');
-  }, 1200);
-});
-
-introVideo.addEventListener('ended', () => {
-  introContainer.classList.add('fadeOut');
-  setTimeout(() => {
-    introContainer.style.display = 'none';
-    showPage('page1');
   }, 1200);
 });
 
 
-    introVideo.addEventListener('ended', () => {
-      introContainer.classList.add('fadeOut');
-      setTimeout(() => {
-        introContainer.style.display = 'none';
-        showPage('page1');
-      }, 1200);
+    // سكربت لتحسين تشغيل الفيديوهات داخل البطاقات فقط:
+    const cardVideos = document.querySelectorAll('.page video');
+    cardVideos.forEach(video => {
+      video.addEventListener('play', () => {
+        cardVideos.forEach(otherVideo => {
+          if (otherVideo !== video && !otherVideo.paused) {
+            otherVideo.pause();
+            otherVideo.currentTime = 0; // تعيد الفيديو للصفر (اختياري)
+          }
+        });
+      });
     });
   </script>
-
-  <center>.Tamer Iswed©</center>
-  <center>.Mohammed Ibrahim©</center>
-  <br><br>
 </body>
 </html>
