@@ -189,7 +189,7 @@
       <source src="https://ia601903.us.archive.org/21/items/4_20250520_20250520_2123/4.mp4" type="video/mp4" />
       المتصفح لا يدعم عرض الفيديو.
     </video>
-    
+    <button id="playIntroBtn" style="display:none;">تشغيل الفيديو التعريفي</button>
     <button id="nextBtn">Next</button>
   </div>
 
@@ -250,29 +250,35 @@
       fullscreenContainer.style.display = 'none';
     }
 
-    const introVideo = document.getElementById('introVideo');
-    const introContainer = document.getElementById('introVideoContainer');
-    const playBtn = document.getElementById('playIntroBtn');
-    const nextBtn = document.getElementById('nextBtn');
+const introVideo = document.getElementById('introVideo');
+const introContainer = document.getElementById('introVideoContainer');
+const nextBtn = document.getElementById('nextBtn');
 
-    introVideo.muted = false;
-    introVideo.play().catch(() => {
-      playBtn.style.display = 'block';
-    });
+// اضبط الفيديو ليبدأ muted حتى يتوافق مع سياسات التشغيل التلقائي في أغلب المتصفحات
+introVideo.muted = false; 
+introVideo.play();
 
-    playBtn.addEventListener('click', () => {
-      introVideo.play();
-      playBtn.style.display = 'none';
-    });
+// حذف أي إظهار لزر playIntroBtn لأنه لن نحتاجه
+// لذا يمكنك حذف أو تجاهل playIntroBtn بالكامل
 
-    nextBtn.addEventListener('click', () => {
-      introVideo.pause();
-      introContainer.classList.add('fadeOut');
-      setTimeout(() => {
-        introContainer.style.display = 'none';
-        showPage('page1');
-      }, 1200);
-    });
+// تابع زر Next كما هو
+nextBtn.addEventListener('click', () => {
+  introVideo.pause();
+  introContainer.classList.add('fadeOut');
+  setTimeout(() => {
+    introContainer.style.display = 'none';
+    showPage('page1');
+  }, 1200);
+});
+
+introVideo.addEventListener('ended', () => {
+  introContainer.classList.add('fadeOut');
+  setTimeout(() => {
+    introContainer.style.display = 'none';
+    showPage('page1');
+  }, 1200);
+});
+
 
     introVideo.addEventListener('ended', () => {
       introContainer.classList.add('fadeOut');
