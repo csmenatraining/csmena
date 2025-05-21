@@ -47,6 +47,20 @@
       outline-offset: 6px;
       background: black;
     }
+    #introFallback {
+      display: none;
+      width: 80vw;
+      max-width: 900px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px #7c3aed, 0 0 50px #0d3b93;
+      outline: 3px solid #7c3aed;
+      outline-offset: 6px;
+      background: #1a0933;
+      color: white;
+      padding: 2em;
+      text-align: center;
+      font-size: 1.2em;
+    }
 
     #welcomeText {
       font-size: 28px;
@@ -73,6 +87,19 @@
     #nextBtn:hover {
       transform: scale(1.1);
       box-shadow: 0 0 30px #b085f5, 0 0 45px #3f27a1;
+    }
+    #playBtn {
+      display: none;
+      margin-top: 15px;
+      background: linear-gradient(135deg, #3aed7c, #1a7a3c);
+      border: none;
+      padding: 10px 25px;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #3aed7c, 0 0 25px #0d933b;
     }
 
     .logo {
@@ -242,7 +269,7 @@
       .video-card {
         width: 90vw;
       }
-      #introVideo {
+      #introVideo, #introFallback {
         width: 95vw;
       }
     }
@@ -286,11 +313,16 @@
 
   <div id="introVideoContainer">
     <div id="welcomeText">Welcome To Our Training</div>
-    <video id="introVideo" autoplay muted playsinline>
+    <video id="introVideo" autoplay muted playsinline onerror="showFallback()">
       <source src="https://ia601903.us.archive.org/21/items/4_20250520_20250520_2123/4.mp4" type="video/mp4" />
       المتصفح لا يدعم عرض الفيديو.
     </video>
+    <div id="introFallback">
+      <p>عذرًا، لا يمكن تحميل الفيديو التمهيدي</p>
+      <p>يمكنك الضغط على Next للمتابعة</p>
+    </div>
     <button id="nextBtn">Next</button>
+    <button id="playBtn" onclick="playIntroVideo()">تشغيل الفيديو</button>
   </div>
 
   <div class="logo">
@@ -386,20 +418,49 @@
       });
     }
 
+    // عرض بديل عند فشل تحميل الفيديو
+    function showFallback() {
+      document.getElementById('introVideo').style.display = 'none';
+      document.getElementById('introFallback').style.display = 'block';
+      document.getElementById('playBtn').style.display = 'block';
+      document.getElementById('nextBtn').textContent = 'المتابعة';
+    }
+
+    // محاولة تشغيل الفيديو يدويًا
+    function playIntroVideo() {
+      const introVideo = document.getElementById('introVideo');
+      introVideo.style.display = 'block';
+      document.getElementById('introFallback').style.display = 'none';
+      document.getElementById('playBtn').style.display = 'none';
+      
+      introVideo.muted = true;
+      introVideo.play()
+        .then(() => {
+          document.getElementById('welcomeText').textContent = 'Welcome To Our Training';
+          introVideo.muted = false;
+        })
+        .catch(error => {
+          showFallback();
+          console.error('فشل تشغيل الفيديو:', error);
+        });
+    }
+
     // تشغيل فيديو المقدمة تلقائياً مع الصوت
     document.addEventListener('DOMContentLoaded', () => {
       const introVideo = document.getElementById('introVideo');
       
-      // حاول تشغيل الفيديو تلقائياً
+      // حاول تشغيل الفيديو تلقائياً مع الصوت مكتوم أولاً
+      introVideo.muted = true;
       const playPromise = introVideo.play();
       
       if (playPromise !== undefined) {
         playPromise.then(() => {
-          // بعد بدء التشغيل، أزل كتم الصوت
+          // بعد بدء التشغيل، حاول إلغاء كتم الصوت
           introVideo.muted = false;
         })
         .catch(error => {
           console.error('فشل التشغيل التلقائي:', error);
+          showFallback();
         });
       }
     });
@@ -472,11 +533,9 @@
       const nav = document.querySelector('nav');
       const techOverlay = document.querySelector('.tech-overlay');
       
-      // إيقاف الفيديو التمهيدي وإفراغ مصدره
+      // إيقاف الفيديو التمهيدي
       introVideo.pause();
       introVideo.currentTime = 0;
-      introVideo.src = '';
-      introVideo.load();
       
       // إخفاء الفيديو التمهيدي
       introContainer.classList.add('fadeOut');
